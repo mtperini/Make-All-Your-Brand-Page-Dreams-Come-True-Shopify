@@ -1,0 +1,56 @@
+<div class="featured_collections">
+  {% for link in linklist.links %}
+{% comment %} Will display either the first product in your collection or the picture you choose as your collection picture
+You can add collections, products or blog posts in your link list and they will show up {% endcomment %}
+    {% assign link_item = link.object %}
+    {% assign link_image = '' %}
+    {% capture link_title %}{{ link.title | escape }}{% endcapture %}
+
+    {% if link.type == 'collection_link' %}
+      {% if link_item.image %}
+        {% assign link_image = link_item.image.src | collection_img_url: 'large' %}
+      {% else %}
+        {% assign link_image = link_item.products.first.featured_image | product_img_url: 'large' %}
+      {% endif %}
+    {% elsif link.type == 'product_link' %}
+      {% assign link_image = link_item.featured_image | product_img_url: 'large' %}
+    {% elsif link.type == 'page_link' %}
+      {% if link_item.content contains "<img" %}
+        {% assign src = link_item.content | split: 'src="' %}
+        {% assign src = src[1] | split: '"' | first | replace: '//cdn', 'http://cdn' | replace: 'http:http://', 'http://' | remove: 'https:'  %}
+        {% if src %}
+          {% assign link_image = src %}
+        {% endif %}
+      {% endif %}
+    {% elsif link.type == 'blog_link' %}
+      {% if link_item.articles.first.content contains "<img" %}
+        {% assign src = link_item.articles.first.content | split: 'src="' %}
+        {% assign src = src[1] | split: '"' | first | replace: '//cdn', 'http://cdn' | replace: 'http:http://', 'http://' | remove: 'https:'  %}
+        {% if src %}
+          {% assign link_image = src %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    <div class="{% if collections_per_row == "2" %}eight columns{% elsif collections_per_row == "3" %}one-third column{% else %}four columns{% endif %} thumbnail">
+      <a href="{{ link_item.url }}" title="{{ link_title }}">
+        {% if link_image != '' %}
+          <img {% if settings.align_height %}style="max-height:{{ settings.collection_height }}px"{% endif %} src="{{ link_image }}" alt="{{ link_title }}" />
+        {% endif %}
+
+        <div class="info">                                              
+          <span class="title">{{ link_title }}</span>
+        </div>
+      </a>
+    </div>
+
+    {% if collections_per_row == "2" %}
+      {% cycle '', '<div class="clear"></div>' %}
+    {% elsif collections_per_row == "3" %}
+      {% cycle '', '', '<div class="clear"></div>' %}    
+    {% elsif collections_per_row == "4" %}  
+      {% cycle '', '', '', '<div class="clear"></div>' %}
+    {% endif %}  
+
+  {% endfor %}
+</div>
