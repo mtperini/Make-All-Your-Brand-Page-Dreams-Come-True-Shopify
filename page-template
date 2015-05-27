@@ -1,16 +1,10 @@
-<div class="sixteen columns clearfix collection_nav">
-  <h1 class="collection_title">
-    {{ page.title }}
-  </h1>
+{% assign linklist = linklists["brands"] %}
+{% assign collections_per_row = settings.frontpage_collections_per_row %}
+
+<div class="twelve columns collection-list">
+	<h1 class="page-title">{{page.title | escape}}</h1>
+	{{ page.content }}
+  
+    {% include 'collection-loop' %}
 </div>
 
-{% if page.content != blank %}
-  <div class="sixteen columns page">
-    <div class="section clearfix">    
-      {{ page.content }}
-    </div>
-  </div>
-{% endif %}
-{% assign linklist = linklists["linklist-handle"] %}
-{% assign collections_per_row = settings.frontpage_collections_per_row %}
-{% include 'collection-loop' %}
