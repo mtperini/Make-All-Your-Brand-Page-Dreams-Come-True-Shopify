@@ -1,19 +1,23 @@
-<div class="featured_collections">
+<ul class="block-grid mobile four-up product-collection">    
   {% for link in linklist.links %}
-{% comment %} Will display either the first product in your collection or the picture you choose as your collection picture
-You can add collections, products or blog posts in your link list and they will show up {% endcomment %}
+  <li>
+    <div class="product">
+    {% comment %}
+      This section supports linking to collections, products, pages, and blogs. It will use the first image found in the page content or blog article.
+    {% endcomment %}
+
     {% assign link_item = link.object %}
     {% assign link_image = '' %}
     {% capture link_title %}{{ link.title | escape }}{% endcapture %}
 
     {% if link.type == 'collection_link' %}
       {% if link_item.image %}
-        {% assign link_image = link_item.image.src | collection_img_url: 'large' %}
+        {% assign link_image = link_item.image.src | collection_img_url: 'medium' %}
       {% else %}
-        {% assign link_image = link_item.products.first.featured_image | product_img_url: 'large' %}
+        {% assign link_image = link_item.products.first.featured_image | product_img_url: 'medium' %}
       {% endif %}
     {% elsif link.type == 'product_link' %}
-      {% assign link_image = link_item.featured_image | product_img_url: 'large' %}
+      {% assign link_image = link_item.featured_image | product_img_url: 'medium' %}
     {% elsif link.type == 'page_link' %}
       {% if link_item.content contains "<img" %}
         {% assign src = link_item.content | split: 'src="' %}
@@ -32,25 +36,19 @@ You can add collections, products or blog posts in your link list and they will 
       {% endif %}
     {% endif %}
 
-    <div class="{% if collections_per_row == "2" %}eight columns{% elsif collections_per_row == "3" %}one-third column{% else %}four columns{% endif %} thumbnail">
-      <a href="{{ link_item.url }}" title="{{ link_title }}">
+	<a href="{{ link_item.url }}" title="{{ link_title }}">
+      <span class="thumbnail">
         {% if link_image != '' %}
           <img {% if settings.align_height %}style="max-height:{{ settings.collection_height }}px"{% endif %} src="{{ link_image }}" alt="{{ link_title }}" />
         {% endif %}
-
-        <div class="info">                                              
-          <span class="title">{{ link_title }}</span>
-        </div>
-      </a>
+      </span>
+      
+      <span class="product-title">
+      	{{ link_title }}
+      </span>
+    </a>
+ 
     </div>
-
-    {% if collections_per_row == "2" %}
-      {% cycle '', '<div class="clear"></div>' %}
-    {% elsif collections_per_row == "3" %}
-      {% cycle '', '', '<div class="clear"></div>' %}    
-    {% elsif collections_per_row == "4" %}  
-      {% cycle '', '', '', '<div class="clear"></div>' %}
-    {% endif %}  
-
+  </li>
   {% endfor %}
-</div>
+</ul>
