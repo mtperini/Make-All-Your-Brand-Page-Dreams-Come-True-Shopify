@@ -5,6 +5,6 @@
 	<h1 class="page-title">{{page.title | escape}}</h1>
 	{{ page.content }}
   
-    {% include 'collection-loop' %}
+    {% include 'collection-within-collection' %}
 </div>
 
