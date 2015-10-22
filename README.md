@@ -1,5 +1,6 @@
 # Make-All-Your-Brand-Page-Dreams-Come-True-Shopify
 Making a brands page for your Shopify Store. 
+
 Step 1: Create collections
 Create all the collections you’ll want to display, and get all the pictures you want to display for said collections in order. (Just like with products, everything looks better when it's the same size.)  
 For me, I'll be building a brand's page so I'll be uploading all the different brand pictures into the collections.
